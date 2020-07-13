@@ -10,7 +10,7 @@
     <meta content="data labeling page" name="description">
     <meta content="Taesu.Kim" name="author">
 
-    <title>Index</title>
+    <title>Forbidden</title>
 
     <!-- Custom fonts for this template-->
 
@@ -140,62 +140,17 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
-                <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800" sec:authorize="isAuthenticated()">Labeling</h1>
-                </div>
-
-                <div class="card shadow mb-4" id="progress-card">
-                    <div class="card-body">
-                        <h4 class="small font-weight-bold" th:if="${data.getTotal()!=0}">Progress Bar
-                            <span class="float-right label-status"
-                                  th:text="|${data.getTotal()-data.getTodo()}/${data.getTotal()} (${#numbers.formatDecimal((data.getTotal()-data.getTodo())*100.0/data.getTotal(),0,2)}%)|"></span>
-                        </h4>
-                        <h4 class="small font-weight-bold" th:if="${data.getTotal()==0}">Progress Bar
-                            <span class="float-right label-status"
-                                  th:text="|0%|"></span></h4>
-                        <div class="progress mb-4">
-                            <div aria-valuemax="100" aria-valuemin="0"
-                                 class="progress-bar bg-danger label-progress-bar"
-                                 role="progressbar" th:if="${data.getTotal()==0}"
-                                 th:style="|width: 0%|"></div>
-                            <div aria-valuemax="100" aria-valuemin="0"
-                                 class="progress-bar bg-danger label-progress-bar"
-                                 role="progressbar"
-                                 th:if="${data.getTotal()!=0}"
-                                 th:style="|width: ${#numbers.formatDecimal((data.getTotal()-data.getTodo())*100.0/data.getTotal(),0,2)}%|"></div>
+                <div class="card shadow mb-4" id="progress-card" sec:authorize="!isAuthenticated()">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">ERROR</h6>
+                    </div>
+                    <div class="card-body" th:text="'권한이 없습니다..'">
+                        <div class="modal-footer">
+                            <a class="btn btn-secondary" href="/">HOME</a>
                         </div>
                     </div>
                 </div>
 
-                <hr/>
-                <!-- Content Row -->
-                <div class="row" sec:authorize="isAuthenticated()">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Content</h6>
-                            </div>
-                            <div class="card-body">
-                                <p hidden id="label-id" th:text="${data.getLabeling().getId()}"></p>
-                                <p hidden id="label-owner" th:text="${data.getLabeling().getOwner()}"></p>
-                                <p hidden id="label-date" th:text="${data.getLabeling().getDate()}"></p>
-                                <p id="label-content" th:text="${data.getLabeling().getContent()}"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <hr/>
-
-                <div class="row mt-3" sec:authorize="isAuthenticated()">
-                    <button class="btn btn-danger mb-2 emotion-button mr-2">분노</button>
-                    <button class="btn btn-warning mb-2 emotion-button mr-2">불안</button>
-                    <button class="btn btn-success mb-2 emotion-button mr-2">광고</button>
-                    <button class="btn btn-info mb-2 emotion-button mr-2">기쁨</button>
-                    <button class="btn btn-facebook mb-2 emotion-button mr-2">안도</button>
-                    <button class="btn btn-dark mb-2 emotion-button mr-2">중립</button>
-                </div>
             </div>
             <!-- /.container-fluid -->
 
@@ -238,39 +193,4 @@
 
 </body>
 
-<script>
-    $(".emotion-button").click(function () {
-        const data = {
-            id: $("#label-id").text(),
-            owner: $("#label-owner").text(),
-            emotion: $(this).text()
-        };
-
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: "/labeling/next",
-            data: data,
-            cache: false,
-            success: function (data) {
-                if (data === undefined) {
-                    window.location.replace("/");
-                } else {
-                    console.log('exist');
-                    const todo = data.todo;
-                    const total = data.total;
-                    $(".label-status").text(`${total - todo}/${total} (${((total - todo) * 100.0 / total).toFixed(2)}%)`);
-                    $(".label-progress-bar").attr('style', `width: ${(total - todo) * 100.0 / total}%`);
-                    $("#label-id").text(data.labeling.id);
-                    $("#label-owner").text(data.labeling.owner);
-                    $("#label-date").text(data.labeling.date);
-                    $("#label-content").text(data.labeling.content);
-                }
-            },
-            error: function (e) {
-                console.log("fail");
-            }
-        });
-    })
-</script>
 </html>
