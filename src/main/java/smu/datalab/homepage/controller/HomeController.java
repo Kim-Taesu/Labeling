@@ -28,7 +28,6 @@ public class HomeController {
             model.addAttribute("todo", todoById);
             if (todoById == 0 && totalById != 0) model.addAttribute("message", "All Task Clear");
         }
-        System.out.println(model.asMap().keySet());
         return "index";
     }
 }

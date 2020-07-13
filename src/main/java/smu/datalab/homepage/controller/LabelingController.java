@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import smu.datalab.homepage.aspect.LoggingAnnotation;
 import smu.datalab.homepage.service.LabelingService;
 import smu.datalab.homepage.vo.EmotionInfo;
@@ -25,12 +26,13 @@ public class LabelingController {
 
     @GetMapping("/list")
     @LoggingAnnotation
-    public String labelList(Principal principal, Model model) {
+    public String labelList(Principal principal, Model model, RedirectAttributes redirectAttributes) {
         final Optional<NextLabel> labeling = labelingService.getOneLabel(principal.getName());
         if (labeling.isPresent()) {
             model.addAttribute("data", labeling.get());
             return "list";
         } else {
+            redirectAttributes.addFlashAttribute("message", "라벨링할 데이터가 없습니다.");
             model.addAttribute("data", null);
             return "redirect:/";
         }
