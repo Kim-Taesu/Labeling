@@ -73,21 +73,30 @@ public class AccountService implements UserDetailsService {
     public boolean edit(EditInfo editInfo) {
         final String id = editInfo.getId();
         final String password = editInfo.getPassword();
+
         final Optional<Account> byId = accountRepository.findById(id);
         if (!byId.isPresent()) return false;
-        final Account account = byId.get();
-        account.setPassword(password);
-        account.encodePassword(passwordEncoder);
-        accountRepository.saveAndFlush(account);
+        else changePassword(password, byId.get());
 
         final int newTodo = editInfo.getTodo().intValue();
         final int todo = labelingService.getTodoById(id).intValue();
         if (newTodo > todo) return false;
+        else if (newTodo == todo) return true;
+        else updateLabels(id, newTodo, todo);
+        return true;
+    }
+
+    private void updateLabels(String id, int newTodo, int todo) {
         final Page<Labeling> labelings = labelingRepository.findAllByOwnerAndEmotionIsNull(id, PageRequest.of(0, todo - newTodo));
         final List<Labeling> collect = labelings.get().collect(Collectors.toList());
         collect.forEach(labeling -> labeling.setOwner(null));
         labelingRepository.saveAll(collect);
         labelingRepository.flush();
-        return true;
+    }
+
+    private void changePassword(String password, Account account) {
+        account.setPassword(password);
+        account.encodePassword(passwordEncoder);
+        accountRepository.saveAndFlush(account);
     }
 }

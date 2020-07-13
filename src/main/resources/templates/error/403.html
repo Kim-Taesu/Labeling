@@ -140,14 +140,14 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
-                <div class="card shadow mb-4" id="progress-card" sec:authorize="!isAuthenticated()">
+                <div class="card shadow mb-4" id="progress-card">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">ERROR</h6>
                     </div>
                     <div class="card-body" th:text="'권한이 없습니다..'">
-                        <div class="modal-footer">
-                            <a class="btn btn-secondary" href="/">HOME</a>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-secondary" href="/">HOME</a>
                     </div>
                 </div>
 
