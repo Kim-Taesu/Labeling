@@ -188,13 +188,7 @@
 
                 <hr/>
 
-                <div class="row mt-3" sec:authorize="isAuthenticated()">
-                    <button class="btn btn-danger mb-2 emotion-button mr-2">분노</button>
-                    <button class="btn btn-warning mb-2 emotion-button mr-2">불안</button>
-                    <button class="btn btn-success mb-2 emotion-button mr-2">광고</button>
-                    <button class="btn btn-info mb-2 emotion-button mr-2">기쁨</button>
-                    <button class="btn btn-facebook mb-2 emotion-button mr-2">안도</button>
-                    <button class="btn btn-dark mb-2 emotion-button mr-2">중립</button>
+                <div class="row mt-3" id="emotions" sec:authorize="isAuthenticated()">
                 </div>
             </div>
             <!-- /.container-fluid -->
@@ -238,6 +232,16 @@
 
 </body>
 
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const emotions = [[${emotions}]];
+    emotions.forEach(function (item, index) {
+        const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        $("#emotions").append(`<button class="btn btn-outline-dark mb-2 emotion-button mr-2 font-weight-bold" style="color: ${color}">${item}</button>`)
+    });
+    /*]]>*/
+</script>
+
 <script>
     $(".emotion-button").click(function () {
         const data = {
@@ -273,4 +277,5 @@
         });
     })
 </script>
+
 </html>
