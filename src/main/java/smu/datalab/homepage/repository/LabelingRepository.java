@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface LabelingRepository extends JpaRepository<Labeling, Long> {
     Optional<Labeling> findFirstByOwnerAndEmotionIsNull(String owner);
 
+    Page<Labeling> findAllByOwnerAndEmotionIsNull(String owner, Pageable pageable);
+
     Long countAllByEmotionIsNullAndOwnerIsNull();
 
     Long countByOwnerAndEmotionIsNull(String owner);

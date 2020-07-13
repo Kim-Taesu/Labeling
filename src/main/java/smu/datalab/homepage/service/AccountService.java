@@ -1,14 +1,20 @@
 package smu.datalab.homepage.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import smu.datalab.homepage.dto.Account;
+import smu.datalab.homepage.dto.Labeling;
 import smu.datalab.homepage.repository.AccountRepository;
+import smu.datalab.homepage.repository.LabelingRepository;
 import smu.datalab.homepage.vo.AccountStatus;
+import smu.datalab.homepage.vo.EditInfo;
 import smu.datalab.homepage.vo.UserAccount;
 
 import java.util.ArrayList;
@@ -18,12 +24,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AccountService implements UserDetailsService {
 
     private final static String USER = "USER";
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final LabelingService labelingService;
+    private final LabelingRepository labelingRepository;
 
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
@@ -56,5 +64,29 @@ public class AccountService implements UserDetailsService {
                     .build());
         }
         return result;
+    }
+
+    public Long getDetail(String name) {
+        return labelingService.getTodoById(name);
+    }
+
+    public boolean edit(EditInfo editInfo) {
+        final String id = editInfo.getId();
+        final String password = editInfo.getPassword();
+        final int newTodo = editInfo.getTodo().intValue();
+        final Optional<Account> byId = accountRepository.findById(id);
+        if (!byId.isPresent()) return false;
+        final Account account = byId.get();
+        account.setPassword(password);
+        account.encodePassword(passwordEncoder);
+        accountRepository.saveAndFlush(account);
+
+        final int todo = labelingService.getTodoById(id).intValue();
+        final Page<Labeling> labelings = labelingRepository.findAllByOwnerAndEmotionIsNull(id, PageRequest.of(0, todo - newTodo));
+        final List<Labeling> collect = labelings.get().collect(Collectors.toList());
+        collect.forEach(labeling -> labeling.setOwner(null));
+        labelingRepository.saveAll(collect);
+        labelingRepository.flush();
+        return true;
     }
 }

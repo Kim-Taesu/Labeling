@@ -1,16 +1,19 @@
 package smu.datalab.homepage.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import smu.datalab.homepage.aspect.LoggingAnnotation;
 import smu.datalab.homepage.dto.Account;
 import smu.datalab.homepage.service.AccountService;
 import smu.datalab.homepage.service.LabelingService;
 import smu.datalab.homepage.vo.AddInfo;
+import smu.datalab.homepage.vo.EditInfo;
 
 import java.security.Principal;
 import java.util.List;
@@ -64,5 +67,27 @@ public class AccountController {
     public String status(Model model) {
         model.addAttribute("status", accountService.getAccountStatus());
         return "status";
+    }
+
+    @GetMapping("/edit")
+    public String editPage(Model model) {
+        model.addAttribute("users", accountService.getAllUsers());
+        return "edit";
+    }
+
+    @PostMapping("/edit")
+    public String edit(EditInfo editInfo, RedirectAttributes attributes) {
+        if (accountService.edit(editInfo)) {
+            attributes.addFlashAttribute("message", "edit success");
+        } else {
+            attributes.addFlashAttribute("message", "edit fail");
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity detail(String name) {
+        final Long detail = accountService.getDetail(name);
+        return ResponseEntity.ok().body(detail);
     }
 }
