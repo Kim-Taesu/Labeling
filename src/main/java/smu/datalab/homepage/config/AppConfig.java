@@ -7,11 +7,9 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import smu.datalab.homepage.dto.Account;
-import smu.datalab.homepage.dto.Labeling;
 import smu.datalab.homepage.repository.AccountRepository;
 import smu.datalab.homepage.repository.LabelingRepository;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Configuration
@@ -37,16 +35,6 @@ public class AppConfig implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         addAccount(ADMIN);
-        addSample();
-    }
-
-    private void addSample() {
-        for (int i = 0; i < 11; i++) {
-            labelingRepository.save(Labeling.builder()
-                    .content(String.valueOf(i))
-                    .date(new Date().toString())
-                    .build());
-        }
     }
 
     private void addAccount(String id) {

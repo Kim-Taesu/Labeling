@@ -124,7 +124,8 @@
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800" sec:authorize="isAuthenticated()">Dashboard</h1>
+                    <h1 class="h3 mb-0 text-gray-800" sec:authorize="isAuthenticated()"
+                        th:text="|Welcom ${#authentication.getName()}!|"></h1>
 
                     <div class="card shadow mb-4" id="progress-card" sec:authorize="!isAuthenticated()">
 
@@ -198,11 +199,11 @@
                                         <div class="row no-gutters align-items-center">
                                             <div class="col-auto">
                                                 <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
-                                                     th:if="${todo==0}"
+                                                     th:if="${todo==0 && total==0}"
                                                      th:text="|0%|"></div>
                                                 <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
                                                      th:text="|${#numbers.formatDecimal((total-todo)*100.0/total,0,2)}%|"
-                                                     th:unless="${todo==0}"></div>
+                                                     th:unless="${todo==0 && total==0}"></div>
                                             </div>
                                             <div class="col">
                                                 <div class="progress progress-sm mr-2">
