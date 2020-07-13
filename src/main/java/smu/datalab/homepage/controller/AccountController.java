@@ -12,7 +12,10 @@ import smu.datalab.homepage.service.AccountService;
 import smu.datalab.homepage.service.LabelingService;
 import smu.datalab.homepage.vo.AddInfo;
 
+import java.security.Principal;
 import java.util.List;
+
+import static java.util.Objects.nonNull;
 
 @Controller
 @RequestMapping("/account")
@@ -22,8 +25,9 @@ public class AccountController {
     private final LabelingService labelingService;
 
     @GetMapping("/loginPage")
-    public String loginPage() {
-        return "login";
+    public String loginPage(Principal principal) {
+        if (nonNull(principal)) return "redirect:/";
+        else return "login";
     }
 
     @GetMapping("/setUp")
@@ -54,5 +58,11 @@ public class AccountController {
     public String signUp(Account account) {
         accountService.signUp(account);
         return "redirect:/";
+    }
+
+    @GetMapping("/status")
+    public String status(Model model) {
+        model.addAttribute("status", accountService.getAccountStatus());
+        return "status";
     }
 }
