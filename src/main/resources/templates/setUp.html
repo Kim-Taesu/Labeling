@@ -52,29 +52,49 @@
                 </a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                ADMIN
+            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    ADMIN
+                </div>
+
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/account/setUp">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Add Data</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/account/add">
+                        <i class="fas fa-fw fa-user"></i>
+                        <span>Add Account</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/account/edit">
+                        <i class="fas fa-fw fa-edit"></i>
+                        <span>Edit Account</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/account/status">
+                        <i class="fas fa-fw fa-signal"></i>
+                        <span>Account Status</span>
+                    </a>
+                </li>
+
             </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/account/setUp">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Set Up</span>
-                </a>
-            </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/account/add">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Add Account</span>
-                </a>
-            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -111,7 +131,9 @@
 
             <!-- Topbar -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
+                <button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop">
+                    <i class="fa fa-bars"></i>
+                </button>
             </nav>
             <!-- End of Topbar -->
 
@@ -126,34 +148,36 @@
                 <!-- Content Row -->
                 <div class="row">
 
-                    <form th:action="@{/account/setUp}" th:method="post">
-                        <div class="card">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary" th:text="|Total Todo : ${todo}|"></h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">ID</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control form-control-sm" name="id">
-                                            <option th:each="name:${users}" th:text="${name}" th:value="${name}">
-                                            </option>
-                                        </select>
+                    <div class="col-12">
+                        <form th:action="@{/account/setUp}" th:method="post">
+                            <div class="card">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary" th:text="|Total Todo : ${todo}|"></h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">ID</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control form-control-sm" name="id">
+                                                <option th:each="name:${users}" th:text="${name}" th:value="${name}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Num</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control form-control-sm" name="count" type="number">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Num</label>
-                                    <div class="col-sm-9">
-                                        <input class="form-control form-control-sm" name="count" type="number">
-                                    </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-secondary" href="/">HOME</a>
+                                    <button class="btn btn-primary" type="submit">Submit</button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
-                            <button class="btn btn-primary" type="submit">Submit</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
 
             </div>

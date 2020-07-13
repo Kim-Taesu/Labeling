@@ -2,6 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
+
 <head>
 
     <meta charset="utf-8">
@@ -42,13 +43,83 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
-        <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-target="#loginModal" data-toggle="modal" href="/account/loginPage">
-                <i class="fas fa-fw fa-sign-in-alt"></i>
-                <span>Login</span>
-            </a>
-        </li>
+        <div sec:authorize="isAuthenticated()">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a aria-controls="collapseTwo" aria-expanded="true" class="nav-link collapsed" href="/labeling/list">
+                    <i class="fas fa-fw fa-search"></i>
+                    <span>Labeling</span>
+                </a>
+            </li>
+
+
+            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    ADMIN
+                </div>
+
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/account/setUp">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Add Data</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/account/add">
+                        <i class="fas fa-fw fa-user"></i>
+                        <span>Add Account</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/account/edit">
+                        <i class="fas fa-fw fa-edit"></i>
+                        <span>Edit Account</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/account/status">
+                        <i class="fas fa-fw fa-signal"></i>
+                        <span>Account Status</span>
+                    </a>
+                </li>
+
+            </div>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <form action="/account/logout" method="post" th:action="@{/account/logout}">
+                    <a class="nav-link collapsed" href="#" onclick="parentNode.submit();">
+                        <i class="fas fa-fw fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </form>
+            </li>
+        </div>
+
+        <div sec:authorize="!isAuthenticated()">
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/account/loginPage">
+                    <i class="fas fa-fw fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+            </li>
+        </div>
 
     </ul>
     <!-- End of Sidebar -->
@@ -61,7 +132,9 @@
 
             <!-- Topbar -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
+                <button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop">
+                    <i class="fa fa-bars"></i>
+                </button>
             </nav>
             <!-- End of Topbar -->
 
@@ -75,35 +148,34 @@
 
                 <!-- Content Row -->
                 <div class="row">
-
-                    <form th:action="@{/account/login}" th:method="post">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="form-group row">
-                                    <label class="col-3 col-form-label" for="accountId">ID</label>
-                                    <div class="col-9">
-                                        <input class="form-control" id="accountId" maxlength="20" name="id"
-                                               placeholder="Id"
-                                               type="text">
+                                <form th:action="@{/account/login}" th:method="post">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="userId">ID</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" id="userId" maxlength="20"
+                                                   name="id" placeholder="ID 를 입력하세요" type="text">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-3 col-form-label" for="inputPassword">PW</label>
-                                    <div class="col-9">
-                                        <input class="form-control" id="inputPassword" name="password"
-                                               placeholder="Password"
-                                               type="password">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="userPw">PW</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" id="userPw" name="password"
+                                                   placeholder="Password 를 입력하세요"
+                                                   type="password">
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="modal-footer">
+                                        <a class="btn btn-secondary" href="/">HOME</a>
+                                        <button class="btn btn-primary" type="submit">Login</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
-                            <button class="btn btn-primary" type="submit">Login</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-
             </div>
             <!-- /.container-fluid -->
 

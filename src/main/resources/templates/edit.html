@@ -52,29 +52,49 @@
                 </a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                ADMIN
+            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    ADMIN
+                </div>
+
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/account/setUp">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Add Data</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/account/add">
+                        <i class="fas fa-fw fa-user"></i>
+                        <span>Add Account</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/account/edit">
+                        <i class="fas fa-fw fa-edit"></i>
+                        <span>Edit Account</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/account/status">
+                        <i class="fas fa-fw fa-signal"></i>
+                        <span>Account Status</span>
+                    </a>
+                </li>
+
             </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/account/setUp">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Set Up</span>
-                </a>
-            </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/account/add">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Add Account</span>
-                </a>
-            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
