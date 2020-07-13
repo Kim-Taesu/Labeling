@@ -116,7 +116,7 @@
             <resource>
                 <directory>${project.build.sourceDirectory}</directory>
                 <includes>
-                    <include>**/*.properties</include>
+                    <include>**/*.yml</include>
                 </includes>
             </resource>
         </resources>

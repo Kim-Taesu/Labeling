@@ -73,7 +73,6 @@ public class AccountService implements UserDetailsService {
     public boolean edit(EditInfo editInfo) {
         final String id = editInfo.getId();
         final String password = editInfo.getPassword();
-        final int newTodo = editInfo.getTodo().intValue();
         final Optional<Account> byId = accountRepository.findById(id);
         if (!byId.isPresent()) return false;
         final Account account = byId.get();
@@ -81,7 +80,9 @@ public class AccountService implements UserDetailsService {
         account.encodePassword(passwordEncoder);
         accountRepository.saveAndFlush(account);
 
+        final int newTodo = editInfo.getTodo().intValue();
         final int todo = labelingService.getTodoById(id).intValue();
+        if (newTodo > todo) return false;
         final Page<Labeling> labelings = labelingRepository.findAllByOwnerAndEmotionIsNull(id, PageRequest.of(0, todo - newTodo));
         final List<Labeling> collect = labelings.get().collect(Collectors.toList());
         collect.forEach(labeling -> labeling.setOwner(null));
